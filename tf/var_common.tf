@@ -1,18 +1,3 @@
-#variable "tr:application-asset-insight-id"{
-#    type = string
-#    default = "205923"
-#}     
-#variable "tr:financial-identifier"{
-#    type = string
-#    default = "66497"
-#}
-#variable "tr:environment-name" {
-#    type = string
-#    default = "tf-poc"
-#}
-#
-#variable "tr:project-name"	{
-#    type = string
-#    default = "akkadia-u6111359"
-#
-#}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ab6f909b6a6af53468e7d14fc3ef504231202f3d31da46c8ecea662b4034a43f
+size 347
