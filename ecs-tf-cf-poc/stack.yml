@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  SubnetID:
+    Type: String
+    Default: "subnet-04fb6f22f08c38812"
+  GroupId:
+    Type: String
+    Default: "sg-01b54ef674966079b"
+
+Resources:
+  
+  Cluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: "a205923-deployment-example-cluster"
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: "a205923-deployment-example-log-group"
+#  ExecutionRole:
+#    Type: AWS::IAM::Role
+#    #Capabilities.member.1: CAPABILITY_NAMED_IAM
+#    Properties:
+#    ExecutionRoleArn: arn:aws:iam::818565325759:role/a205923-tf-poc-cf
+#    #  RoleName: "a205923-deployment-example-role" 
+#    #  
+#    #  PermissionsBoundary : arn:aws:iam::818565325759:policy/tr-permission-boundary
+#    #    #- arn :arn:aws:iam::818565325759:role/human-role/a205923-PowerUser2
+#    #    #capabilities: CAPABILITY_NAMED_IAM
+###
+#    ##  
+#    ##  #Capabilities: CAPABILITY_NAMED_IAM
+#    #  AssumeRolePolicyDocument:
+#    #    Statement:
+#    #      - Effect: Allow
+#    #        Principal:
+#    #          Service: ecs-tasks.amazonaws.com
+#    #        Action: sts:AssumeRole
+#    #        
+#    #       
+#    #  ManagedPolicyArns:
+#    #    - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+  #ContainerSecurityGroup:
+  #  Type: AWS::EC2::SecurityGroup
+  #  Properties:
+  #    GroupName: "a205923-ContainerSecurityGroup"
+  #    GroupDescription: Security group for NGINX container
+  #    VpcId: vpc-0f71a5f77d9183ff1
+  #    SecurityGroupIngress:
+  #      - IpProtocol: tcp
+  #        FromPort: 80
+  #        ToPort: 80
+  #        CidrIp: 10.0.1.0/24
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ExecutionRoleArn: arn:aws:iam::818565325759:role/a205923-ecs-tf-poc-cf
+      Family: deployment-example-task
+      Cpu: 256
+      Memory: 512
+      NetworkMode: awsvpc
+    #  ExecutionRoleArn: !Ref ExecutionRole
+      
+      ContainerDefinitions:
+        - Name: "a205923-deployment-example-container"
+          Image: nginx:1.17.7
+          PortMappings:
+            - ContainerPort: 80
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref AWS::Region
+              awslogs-group: !Ref LogGroup
+              awslogs-stream-prefix: ecs
+      RequiresCompatibilities:
+        - EC2
+        - FARGATE
+  Service:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: "a205923-deployment-exmaple-service"
+      Cluster: !Ref Cluster
+      TaskDefinition: !Ref TaskDefinition
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets:
+            - !Ref SubnetID
+          SecurityGroups:
+            - !Ref GroupId
