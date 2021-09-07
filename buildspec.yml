@@ -5,8 +5,8 @@ phases:
   pre_build:
     commands:
       - echo terraform install...
-      - sudo yum install -y yum-utils
-      - sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/$release/hashicorp.repo
+      - yum install -y yum-utils
+      - yum-config-manager --add-repo https://rpm.releases.hashicorp.com/$release/hashicorp.repo
       - yum install terraform
       - echo terraform validate
       - terraform validate
