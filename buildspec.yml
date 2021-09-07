@@ -4,28 +4,13 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo terraform install...
-      - yum install wget unzip
-      - yum install -y yum-utils
-      - yum wget https://releases.hashicorp.com/terraform/0.12.2/terraform_0.12.2_linux_amd64.zip
-      - yum unzip ./terraform_0.12.2_linux_amd64.zip –d /usr/local/bin
-      - terraform –v
-      - echo terraform validate
-      - terraform validate
+      - echo pre_build
+      
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - echo build stag
   post_build:
     commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-#      - echo Writing image definitions file...
-#      - printf '[{"name":"nodeapp","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
- #     - cat imagedefinitions.json 
+      - echo post_build
 #artifacts:
 #    files: imagedefinitions.json
