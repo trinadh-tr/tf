@@ -7,8 +7,8 @@ phases:
       - echo terraform install...
       - yum install wget unzip
       - yum install -y yum-utils
-      - sudo wget https://releases.hashicorp.com/terraform/0.12.2/terraform_0.12.2_linux_amd64.zip
-      - sudo unzip ./terraform_0.12.2_linux_amd64.zip –d /usr/local/bin
+      - yum wget https://releases.hashicorp.com/terraform/0.12.2/terraform_0.12.2_linux_amd64.zip
+      - yum unzip ./terraform_0.12.2_linux_amd64.zip –d /usr/local/bin
       - terraform –v
       - echo terraform validate
       - terraform validate
