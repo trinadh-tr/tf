@@ -5,7 +5,11 @@ phases:
   pre_build:
     commands:
       - echo terraform install...
-      - yum install terraform-0.14.0-2.x86_64
+      - yum install wget unzip
+      - yum install -y yum-utils
+      - sudo wget https://releases.hashicorp.com/terraform/0.12.2/terraform_0.12.2_linux_amd64.zip
+      - sudo unzip ./terraform_0.12.2_linux_amd64.zip –d /usr/local/bin
+      - terraform –v
       - echo terraform validate
       - terraform validate
   build:
